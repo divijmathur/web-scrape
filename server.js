@@ -13,7 +13,7 @@ db.on("error", function(error){
     console.log("database error ", error)
 });
 app.get("/", function(req,res){
-    res.send("Hello world!")
+    res.render("index.html");
 });
 app.get("/all", function(req,res){
     db.scrapedNews.find({}, function(error,found){
