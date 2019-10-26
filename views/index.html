@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Frogs</title>
+</head>
+
+<body>
+	<h1>News</h1>
+	<div>
+
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.4.0.min.js"
+		integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script>
+	<script type="text/javascript">
+		$.ajax({
+			method: 'GET',
+			url: "/all"
+		}).then(function (news) {
+			for (var nIndex in news) {
+				var $p = $('<p>');
+				$p.text(`_id: ${news[nIndex]._id} - name: ${news[nIndex].title}`);
+				$('div').append($p);
+			}
+		})
+
+
+
+	// $.ajax({
+	// 	method: 'GET',
+	// 	url: '/frogs'
+	// }).then(function(frogs){
+	// 	for (var fIndex in frogs){
+	// 		var $p = $('<p>');
+	// 		$p.text(`_id: ${frogs[fIndex]._id} - name: ${frogs[fIndex].name} - species: ${frogs[fIndex].species}`);
+
+	// 		$('div').append($p);
+	// 	}
+	// })
+	</script>
+</body>
+
+</html>

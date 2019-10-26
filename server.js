@@ -2,7 +2,10 @@ var express = require("express");
 var mongojs = require("mongojs");
 var cheerio = require("cheerio");
 var axios = require("axios");
+var bodyParser = require("body-parser");
 var app = express();
+app.use(bodyParser());
+app.use(express.static("views"));
 var databaseUrl = "news";
 var collections = ["scrapedNews"];
 var db = mongojs(databaseUrl, collections);
@@ -23,12 +26,20 @@ app.get("/all", function(req,res){
     });
 });
 
+function updateDB(title){
+    db.scrapedNews.update({
+        title: title
+    }, {$set: {title: title}},
+    {upsert: true},
+    )
+}
+
 app.get("/scrape", function(req,res){
     axios.get("https://www.cnn.com/world").then(function(response){
         var $ = cheerio.load(response.data);
         $("span.cd__headline-text").each(function(i, element){
             var title = $(element).text();
-            if (title && link) {
+            // if (title && link) {
             db.scrapedNews.insert({
                 title: title
             }, function(err, inserted){
@@ -38,8 +49,9 @@ app.get("/scrape", function(req,res){
                 else {
                     console.log(inserted);
                 }
+                updateDB();
             });
-            }
+            // }
         });
     });
     res.send("scraping done");
